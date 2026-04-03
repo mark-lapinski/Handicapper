@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 export interface UsgaLookupQuery {
   country: string;
@@ -52,7 +53,7 @@ export interface UsgaLookupResponse {
 export class UsgaLookupService {
   private readonly http = inject(HttpClient);
   private readonly endpoint = 'https://api.openai.com/v1/responses';
-  private readonly apiKey = '';
+  private readonly apiKey = environment.openAiApiKey;
 
   lookup(query: UsgaLookupQuery): Observable<UsgaLookupResponse> {
     const input = [
@@ -75,6 +76,10 @@ export class UsgaLookupService {
   }
 
   private executeLookup(input: string, previousResponseId?: string, selectedTee?: string): Observable<UsgaLookupResponse> {
+    if (!this.apiKey?.trim()) {
+      return throwError(() => new Error('OpenAI API key is not configured. Set environment.openAiApiKey before lookup.'));
+    }
+
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${this.apiKey}`

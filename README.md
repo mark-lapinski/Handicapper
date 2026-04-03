@@ -12,6 +12,22 @@ ng serve
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
+## OpenAI API key setup
+
+The course lookup service reads the key from Angular environment config.
+
+- Development: set `openAiApiKey` in `src/environments/environment.development.ts`
+- Production build: set `openAiApiKey` in `src/environments/environment.ts`
+
+Example:
+
+```ts
+export const environment = {
+	production: false,
+	openAiApiKey: 'your-openai-api-key'
+};
+```
+
 ## Code scaffolding
 
 Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
