@@ -16,7 +16,8 @@ Once the server is running, open your browser and navigate to `http://localhost:
 
 The course lookup service reads the key from Angular environment config.
 
-- Development: set `openAiApiKey` in `src/environments/environment.development.ts`
+- Local development (`npm run start`): set `openAiApiKey` in `src/environments/environment.local.ts`
+- Shared development fallback: `src/environments/environment.development.ts` (kept blank)
 - Production build: set `openAiApiKey` in `src/environments/environment.ts`
 
 Example:
@@ -27,6 +28,8 @@ export const environment = {
 	openAiApiKey: 'your-openai-api-key'
 };
 ```
+
+`src/environments/environment.local.ts` is gitignored so your local key is not committed.
 
 ## Code scaffolding
 
