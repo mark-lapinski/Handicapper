@@ -1,0 +1,174 @@
+.lookup-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+  border-bottom: 2px solid #e5e5e5;
+  padding-bottom: 16px;
+}
+
+.header h1 {
+  margin: 0 0 8px 0;
+}
+
+.header p {
+  margin: 0;
+  color: #666;
+}
+
+.lookup-form {
+  background: #f8f9fa;
+  border: 1px solid #e3e3e3;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.form-control {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.btn {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+}
+
+.btn-secondary {
+  border: 1px solid #ccc;
+  background: #fff;
+  color: #333;
+}
+
+.error-message {
+  border: 1px solid #f2b3b3;
+  background: #fee;
+  color: #7f1d1d;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+}
+
+.results {
+  margin-top: 18px;
+}
+
+.question-panel {
+  margin-top: 16px;
+  border: 1px solid #f0d9a6;
+  background: #fff8ea;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.question-panel h2 {
+  margin: 0 0 8px 0;
+  font-size: 1rem;
+}
+
+.question-panel p {
+  margin: 0 0 10px 0;
+  color: #5f3e05;
+}
+
+.question-actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+}
+
+.table-wrap {
+  overflow: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+thead {
+  background: #f3f4f6;
+}
+
+.empty {
+  color: #666;
+}
+
+details {
+  margin-top: 12px;
+}
+
+.details-body {
+  margin-top: 8px;
+}
+
+pre {
+  max-height: 220px;
+  overflow: auto;
+  background: #111827;
+  color: #f9fafb;
+  border-radius: 8px;
+  padding: 10px;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 700px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .question-actions {
+    grid-template-columns: 1fr;
+  }
+}

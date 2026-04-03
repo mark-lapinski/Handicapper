@@ -1,0 +1,121 @@
+<div class="lookup-container">
+  <div class="header">
+    <h1>Course Lookup</h1>
+    <p>Use OpenAI lookup to find course rating and slope values.</p>
+  </div>
+
+  @if (errorMessage(); as error) {
+    <div class="error-message" role="alert">{{ error }}</div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="runLookup()" class="lookup-form">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="country">Country</label>
+        <input id="country" class="form-control" type="text" formControlName="country" />
+      </div>
+
+      <div class="form-group">
+        <label for="courseName">Course Name</label>
+        <input id="courseName" class="form-control" type="text" formControlName="courseName" placeholder="e.g., Randall Oaks" />
+      </div>
+
+      <div class="form-group">
+        <label for="city">City</label>
+        <input id="city" class="form-control" type="text" formControlName="city" placeholder="e.g., West Dundee" />
+      </div>
+
+      <div class="form-group">
+        <label for="state">State</label>
+        <input id="state" class="form-control" type="text" formControlName="state" placeholder="e.g., IL" />
+      </div>
+
+      <div class="form-group">
+        <label for="teeColor">Tee</label>
+        <select id="teeColor" class="form-control" formControlName="teeColor">
+          <option value="Red">Red</option>
+          <option value="White">White</option>
+          <option value="Blue">Blue</option>
+          <option value="Black">Black</option>
+          <option value="Gold">Gold</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="holeCount">Holes</label>
+        <select id="holeCount" class="form-control" formControlName="holeCount">
+          <option value="9">9</option>
+          <option value="18">18</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="gender">Gender</label>
+        <select id="gender" class="form-control" formControlName="gender">
+          <option value="Men">Men</option>
+          <option value="Women">Women</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="btn btn-primary" [disabled]="isLoading() || form.invalid">
+        @if (!isLoading()) { Lookup } @else { Looking up... }
+      </button>
+      <button type="button" class="btn btn-secondary" routerLink="/">Back</button>
+    </div>
+
+    @if (question(); as followupQuestion) {
+      <div class="question-panel">
+        <h2>Follow-up Needed</h2>
+        <p>{{ followupQuestion }}</p>
+        <div class="question-actions">
+          <input class="form-control" type="text" formControlName="followupAnswer" placeholder="Type your answer" />
+          <button type="button" class="btn btn-primary" (click)="submitFollowupAnswer()" [disabled]="isSubmittingAnswer()">
+            @if (!isSubmittingAnswer()) { Submit Answer } @else { Submitting... }
+          </button>
+        </div>
+      </div>
+    }
+  </form>
+
+  @if (result(); as lookupResult) {
+    <div class="results">
+      <h2>Lookup Results</h2>
+
+      @if (lookupResult.matches.length > 0) {
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Tee</th>
+                <th>Course Rating</th>
+                <th>Slope Rating</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (match of lookupResult.matches; track match.tee + '-' + match.courseRating + '-' + match.slopeRating) {
+                <tr>
+                  <td>{{ match.tee || 'Unknown' }}</td>
+                  <td>{{ match.courseRating }}</td>
+                  <td>{{ match.slopeRating }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <p class="empty">No rating/slope values were returned. Try refining the course fields.</p>
+      }
+
+      <details>
+        <summary>Response details</summary>
+        <div class="details-body">
+          <strong>Raw Response</strong>
+          <pre>{{ lookupResult.responseText }}</pre>
+        </div>
+      </details>
+    </div>
+  }
+</div>

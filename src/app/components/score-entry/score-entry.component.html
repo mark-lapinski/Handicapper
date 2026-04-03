@@ -1,0 +1,234 @@
+<div class="entry-container">
+  <div class="header">
+    <h1>Enter New Score</h1>
+    <p>Record your latest round</p>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="score-form">
+    <div class="form-section">
+      <h2>Course Information</h2>
+
+      <div class="form-group">
+        <label for="country">Country</label>
+        <input
+          id="country"
+          type="text"
+          class="form-control"
+          formControlName="country"
+          placeholder="e.g., United States"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="courseName">Course Name</label>
+        <input
+          id="courseName"
+          type="text"
+          class="form-control"
+          formControlName="courseName"
+          placeholder="e.g., Pebble Beach Golf Links"
+          [class.is-invalid]="courseName?.touched && courseName?.invalid"
+        />
+        <div *ngIf="courseName?.touched && courseName?.invalid" class="error-text">
+          <span *ngIf="courseName?.errors?.['required']">Course name is required</span>
+          <span *ngIf="courseName?.errors?.['minlength']">Course name must be at least 2 characters</span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="city">City</label>
+          <input
+            id="city"
+            type="text"
+            class="form-control"
+            formControlName="city"
+            placeholder="e.g., West Dundee"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="state">State</label>
+          <input
+            id="state"
+            type="text"
+            class="form-control"
+            formControlName="state"
+            placeholder="e.g., IL"
+          />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="teeColor">Tee Color</label>
+          <select id="teeColor" class="form-control" formControlName="teeColor">
+            <option value="Red">Red</option>
+            <option value="White">White</option>
+            <option value="Blue">Blue</option>
+            <option value="Black">Black</option>
+            <option value="Gold">Gold</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="holeCount">Holes</label>
+          <select id="holeCount" class="form-control" formControlName="holeCount">
+            <option value="9">9 Holes</option>
+            <option value="18">18 Holes</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="gender">Gender</label>
+          <select id="gender" class="form-control" formControlName="gender">
+            <option value="Men">Men</option>
+            <option value="Women">Women</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h2>Course Ratings</h2>
+      <p class="section-note">Use lookup to auto-fill these values, or enter them manually.</p>
+      <div class="form-actions-inline">
+        <button type="button" class="btn btn-secondary" (click)="runLookup()" [disabled]="isLookupLoading || isSubmitting">
+          <span *ngIf="!isLookupLoading">Lookup</span>
+          <span *ngIf="isLookupLoading">Looking up...</span>
+        </button>
+      </div>
+
+      <div *ngIf="lookupErrorMessage" class="error-message" role="alert">
+        {{ lookupErrorMessage }}
+      </div>
+
+      <div *ngIf="lookupStatusMessage" class="status-message" role="status">
+        {{ lookupStatusMessage }}
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="courseRating">Course Rating</label>
+          <input
+            id="courseRating"
+            type="number"
+            class="form-control"
+            formControlName="courseRating"
+            step="0.1"
+            min="40"
+            max="90"
+            placeholder="e.g., 72.4"
+            [class.is-invalid]="courseRating?.touched && courseRating?.invalid"
+          />
+          <div *ngIf="courseRating?.touched && courseRating?.invalid" class="error-text">
+            <span *ngIf="courseRating?.errors?.['required']">Course rating is required</span>
+            <span *ngIf="courseRating?.errors?.['min'] || courseRating?.errors?.['max']">
+              Must be between 40 and 90
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="slopeRating">Slope Rating</label>
+          <input
+            id="slopeRating"
+            type="number"
+            class="form-control"
+            formControlName="slopeRating"
+            step="1"
+            min="55"
+            max="155"
+            placeholder="e.g., 131"
+            [class.is-invalid]="slopeRating?.touched && slopeRating?.invalid"
+          />
+          <div *ngIf="slopeRating?.touched && slopeRating?.invalid" class="error-text">
+            <span *ngIf="slopeRating?.errors?.['required']">Slope rating is required</span>
+            <span *ngIf="slopeRating?.errors?.['min'] || slopeRating?.errors?.['max']">
+              Must be between 55 and 155
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h2>Your Score</h2>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="scoreValue">Score</label>
+          <input
+            id="scoreValue"
+            type="number"
+            class="form-control"
+            formControlName="scoreValue"
+            step="1"
+            min="18"
+            max="200"
+            placeholder="e.g., 78"
+            [class.is-invalid]="scoreValue?.touched && scoreValue?.invalid"
+          />
+          <div *ngIf="scoreValue?.touched && scoreValue?.invalid" class="error-text">
+            <span *ngIf="scoreValue?.errors?.['required']">Score is required</span>
+            <span *ngIf="scoreValue?.errors?.['min'] || scoreValue?.errors?.['max']">
+              Must be between 18 and 200
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="date">Date</label>
+          <input
+            id="date"
+            type="date"
+            class="form-control"
+            formControlName="date"
+            [class.is-invalid]="date?.touched && date?.invalid"
+          />
+          <div *ngIf="date?.touched && date?.invalid" class="error-text">
+            <span *ngIf="date?.errors?.['required']">Date is required</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h2>Additional Notes</h2>
+      <div class="form-group">
+        <label for="notes">Notes (Optional)</label>
+        <textarea
+          id="notes"
+          class="form-control"
+          formControlName="notes"
+          rows="3"
+          placeholder="e.g., Played well, course was in great condition..."
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="onCancel()"
+        [disabled]="isSubmitting"
+      >
+        Cancel
+      </button>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="form.invalid || isSubmitting"
+      >
+        <span *ngIf="!isSubmitting">Save Score</span>
+        <span *ngIf="isSubmitting">Saving...</span>
+      </button>
+    </div>
+  </form>
+</div>

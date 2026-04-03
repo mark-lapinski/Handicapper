@@ -1,0 +1,109 @@
+<div class="history-container">
+  <div class="header">
+    <div>
+      <h1>Score History</h1>
+      <p>All recorded rounds</p>
+    </div>
+    <button routerLink="/entry" class="btn btn-primary">+ New Score</button>
+  </div>
+
+  <div *ngIf="scores.length === 0" class="empty-state">
+    <h2>No Scores Yet</h2>
+    <p>Start tracking your golf scores by entering your first round.</p>
+    <button routerLink="/entry" class="btn btn-primary btn-lg">Enter Your First Score</button>
+  </div>
+
+  <div *ngIf="scores.length > 0" class="controls">
+    <div class="sort-controls">
+      <label>Sort by:</label>
+      <button
+        class="sort-btn"
+        [class.active]="sortBy === 'date'"
+        (click)="onSortChange('date')"
+      >
+        Date
+      </button>
+      <button
+        class="sort-btn"
+        [class.active]="sortBy === 'score'"
+        (click)="onSortChange('score')"
+      >
+        Score
+      </button>
+      <button
+        class="sort-btn"
+        [class.active]="sortBy === 'differential'"
+        (click)="onSortChange('differential')"
+      >
+        Differential
+      </button>
+    </div>
+
+    <div class="filter-controls">
+      <label>Filter by tee:</label>
+      <button
+        class="filter-btn"
+        [class.active]="filterTeeColor === 'All'"
+        (click)="onFilterChange('All')"
+      >
+        All
+      </button>
+      <button
+        *ngFor="let color of uniqueTeeColors"
+        class="filter-btn"
+        [class.active]="filterTeeColor === color"
+        [class]="getTeeColorClass(color)"
+        (click)="onFilterChange(color)"
+      >
+        {{ color }}
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="scores.length > 0" class="scores-table">
+    <div class="table-header">
+      <div class="col col-course">Course</div>
+      <div class="col col-date">Date</div>
+      <div class="col col-score">Score</div>
+      <div class="col col-rating">Rating</div>
+      <div class="col col-differential">Differential</div>
+      <div class="col col-actions">Actions</div>
+    </div>
+
+    <div *ngFor="let score of scores" class="table-row">
+      <div class="col col-course">
+        <div class="course-info">
+          <div class="course-name">{{ score.courseName }}</div>
+          <div class="course-meta">
+            <span class="tee-badge" [class]="getTeeColorClass(score.teeColor)">
+              {{ score.teeColor }} Tee
+            </span>
+            <span class="holes">{{ score.holeCount }} holes</span>
+          </div>
+        </div>
+      </div>
+      <div class="col col-date">{{ formatDate(score.date) }}</div>
+      <div class="col col-score">
+        <span class="score-value">{{ score.scoreValue }}</span>
+      </div>
+      <div class="col col-rating">
+        <span class="rating-text">{{ score.courseRating }}/{{ score.slopeRating }}</span>
+      </div>
+      <div class="col col-differential">
+        <span class="differential-value">{{ score.handicapDifferential.toFixed(1) }}</span>
+      </div>
+      <div class="col col-actions">
+        <button routerLink="/score/{{ score.id }}/edit" class="action-btn edit-btn" title="Edit">
+          ✎
+        </button>
+        <button class="action-btn delete-btn" (click)="onDelete(score.id, $event)" title="Delete">
+          ✕
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="back-nav">
+    <button routerLink="/" class="btn btn-secondary">← Back to Dashboard</button>
+  </div>
+</div>

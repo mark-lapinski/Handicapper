@@ -1,0 +1,50 @@
+<div class="dashboard-container">
+  <div class="header">
+    <h1>Handicap Calculator</h1>
+  </div>
+
+  <div *ngIf="hasScores; then showScores else noScores"></div>
+
+  <ng-template #showScores>
+    <div class="scores-section">
+      <div class="handicap-display">
+        <h2>Current Handicap Index</h2>
+        <div class="handicap-value">{{ handicapIndex.toFixed(1) }}</div>
+      </div>
+
+      <div class="recent-scores">
+        <h3>Recent Scores</h3>
+        <div class="scores-list">
+          <div *ngFor="let score of recentScores" class="score-item">
+            <div class="score-info">
+              <div class="course-name">{{ score.courseName }}</div>
+              <div class="score-meta">
+                {{ formatScore(score) }} • {{ formatDate(score.date) }}
+              </div>
+            </div>
+            <div class="differential">
+              {{ score.handicapDifferential.toFixed(1) }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button routerLink="/entry" class="btn btn-primary">Enter New Score</button>
+        <button routerLink="/history" class="btn btn-secondary">View All Scores</button>
+        <button routerLink="/course-lookup" class="btn btn-secondary">Lookup Course Rating</button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #noScores>
+    <div class="welcome-section">
+      <h2>Welcome to Handicap Calculator</h2>
+      <p>Track your golf handicap index by recording your scores. Get started by entering your first round.</p>
+      <div class="actions">
+        <button routerLink="/entry" class="btn btn-primary btn-lg">Enter Your First Score</button>
+        <button routerLink="/course-lookup" class="btn btn-secondary btn-lg">Lookup Course Rating</button>
+      </div>
+    </div>
+  </ng-template>
+</div>
