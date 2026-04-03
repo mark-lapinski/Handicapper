@@ -1,0 +1,38 @@
+trigger:
+  branches:
+    include:
+      - master
+
+pr:
+  branches:
+    include:
+      - master
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  nodeVersion: '22.x'
+
+steps:
+  - checkout: self
+    clean: true
+
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '$(nodeVersion)'
+    displayName: 'Use Node.js $(nodeVersion)'
+
+  - script: |
+      npm ci
+      npm run build
+      cp dist/handicapper/browser/index.csr.html dist/handicapper/browser/index.html
+    displayName: 'Install and build app'
+
+  - task: AzureStaticWebApp@0
+    inputs:
+      app_location: '/'
+      output_location: 'dist/handicapper/browser'
+      skip_app_build: true
+      azure_static_web_apps_api_token: '$(AZURE_STATIC_WEB_APPS_API_TOKEN)'
+    displayName: 'Deploy to Azure Static Web App'
